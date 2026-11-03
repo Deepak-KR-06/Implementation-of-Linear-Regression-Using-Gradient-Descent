@@ -8,25 +8,25 @@ To write a program to predict the profit of a city using the linear regression m
 2. Anaconda – Python 3.7 Installation / Jupyter notebook
 
 ## Algorithm
-1. 
-2. 
-3. 
-4. 
+1.Import the required library and read the dataframe.
+
+2.Write a function computeCost to generate the cost function.
+
+3.Perform iterations og gradient steps with learning rate.
+
+4.Plot the Cost function using Gradient Descent and generate the required graph.
 
 ## Program:
 ```
 /*
 Program to implement the linear regression using gradient descent.
 Developed by: Deepak K R
-RegisterNumber:  25008695 (212224050057)
+RegisterNumber:  212225040057
 */
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-# -----------------------
-# Data
-# -----------------------
 df = pd.read_csv('ex3.csv')
 x_raw = df['R&D Spend'].values
 y_raw = df['Profit'].values
@@ -35,9 +35,7 @@ y_raw = df['Profit'].values
 x = (x_raw - x_raw.min()) / (x_raw.max() - x_raw.min())
 y = (y_raw - y_raw.min()) / (y_raw.max() - y_raw.min())
 
-# -----------------------
-# Parameters
-# -----------------------
+
 w = 0.0
 b = 0.0
 alpha = 0.1
@@ -46,9 +44,6 @@ n = len(x)
 
 losses = []
 
-# -----------------------
-# Gradient Descent
-# -----------------------
 for _ in range(epochs):
     y_hat = w * x + b
 
@@ -62,19 +57,12 @@ for _ in range(epochs):
     w -= alpha * dw
     b -= alpha * db
 
-# -----------------------
-# Plots
-# -----------------------
 plt.figure(figsize=(12, 5))
-
-# 1️⃣ Loss vs Iterations
 plt.subplot(1, 2, 1)
 plt.plot(losses, color="blue")
 plt.xlabel("R&D Spend")
 plt.ylabel("Profit")
 plt.title("R&D Spend VS Profit")
-
-# 2️⃣ Regression Line
 plt.subplot(1, 2, 2)
 plt.scatter(x, y, color="red", label="Data")
 plt.plot(x, w * x + b, color="green", label="Regression Line")
