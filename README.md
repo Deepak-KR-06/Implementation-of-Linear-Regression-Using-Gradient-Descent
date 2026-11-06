@@ -23,62 +23,70 @@ Program to implement the linear regression using gradient descent.
 Developed by: Deepak K R
 RegisterNumber:  212225040057
 */
+
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-df = pd.read_csv('ex3.csv')
-x_raw = df['R&D Spend'].values
-y_raw = df['Profit'].values
+#Load the Data
+data=pd.read_csv("C:/Users/acer/Downloads/50_Startups.csv")
+x=data["R&D Spend"].values
+y=data["Profit"].values
 
-# Feature Scaling (Min-Max) to ensure convergence with Gradient Descent
-x = (x_raw - x_raw.min()) / (x_raw.max() - x_raw.min())
-y = (y_raw - y_raw.min()) / (y_raw.max() - y_raw.min())
+#Feature Scaling
+x_mean=np.mean(x)
+x_std=np.std(x)
+x=(x-x_mean)/x_std
 
+#Parameters
+w=0.0
+b=0.0
+alpha=0.01
+epochs=100
+n=len(x)
 
-w = 0.0
-b = 0.0
-alpha = 0.1
-epochs = 100
-n = len(x)
+losses=[]
 
-losses = []
-
-for _ in range(epochs):
-    y_hat = w * x + b
-
-    # Mean Squared Error
-    loss = np.mean((y_hat - y) ** 2)
+#Gradient Descent
+for i in range(epochs):
+    y_hat=w*x+b
+    loss=np.mean((y_hat-y)**2)
     losses.append(loss)
+    
+    dw=(2/n)*np.sum((y_hat-y)*x)
+    db=(2/n)*np.sum(y_hat-y)
+    
+    w-=alpha*dw
+    b-=alpha*db
 
-    dw = (2/n) * np.sum((y_hat - y) * x)
-    db = (2/n) * np.sum(y_hat - y)
+#Plot
+plt.figure(figsize=(12,5))
 
-    w -= alpha * dw
-    b -= alpha * db
+plt.subplot(1,2,1)
+plt.plot(losses)
+plt.xlabel("Iterations")
+plt.ylabel("Loss(MSE)")
+plt.title("Loss vs Iterations")
 
-plt.figure(figsize=(12, 5))
-plt.subplot(1, 2, 1)
-plt.plot(losses, color="blue")
-plt.xlabel("R&D Spend")
+plt.subplot(1,2,2)
+plt.scatter(x,y)
+x_sorted=np.argsort(x)
+plt.plot(x[x_sorted],(w*x+b)[x_sorted],color="red")
+plt.xlabel("R&D Spend (scaled)")
 plt.ylabel("Profit")
-plt.title("R&D Spend VS Profit")
-plt.subplot(1, 2, 2)
-plt.scatter(x, y, color="red", label="Data")
-plt.plot(x, w * x + b, color="green", label="Regression Line")
-plt.xlabel("R&D Spend (Scaled)")
-plt.ylabel("Profit (Scaled)")
 plt.title("Linear Regression Fit")
-plt.legend()
+
+plt.tight_layout()
 plt.show()
 
-print("Final weight (w):", w)
-print("Final bias (b):", b)
+print(f"Final weight (w): {w}")
+print(f"Final bias (b): {b}")
 
 ```
 
 ## Output:
-![IMG](<Screenshot 2026-01-27 114531.png>)
+<img width="1512" height="722" alt="image" src="https://github.com/user-attachments/assets/75959365-465b-4b99-bb1d-7947c45cf1db" />
+
 
 
 ## Result:
